@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "outDir": "./lib",
-    "jsx": "preserve"
-  },
-  "include": ["src/**/*.tsx", "src/**/*.ts"]
-}

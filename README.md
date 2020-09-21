@@ -11,9 +11,8 @@ npm i --save maayanlab/react-gsea
 
 ### Usage
 ```jsx
-import ReactGSEA, { dataFromResults } from 'react-gsea'
+import { ReactGSEA, dataFromResults } from 'react-gsea'
 
-// see public for more elaborate example
 const your_viz = (
   <ReactGSEA
     data={
@@ -28,10 +27,10 @@ const your_viz = (
         },
         output: {
           entities: [
-            'STAT3', 'STAT2', 'CD58', // ...
+            'STAT3', 'STAT2', 'CD58', 'STAT1', // ...
           ],
           ranks: [
-            1, 2, 3, // ...
+            1, 0, 2, 3, // ...
           ],
         }
       })

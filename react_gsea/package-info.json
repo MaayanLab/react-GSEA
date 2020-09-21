@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "A react-wrapped d3 visualization for rendering GSEA running sum visualizations in browser",
   "source": "src/index.jsx",
-  "main": "dist/react-gsea.js",
-  "umd:main": "dist/react-gsea.umd.js",
-  "module": "dist/react-gsea.mjs",
+  "main": "react_gsea/react_gsea.js",
+  "umd:main": "react_gsea/react_gsea.umd.js",
+  "module": "react_gsea/react_gsea.mjs",
   "scripts": {
     "build:dash:js": "webpack --mode production",
     "build:dash:py": "python3 -m dash.development.component_generator ./src react_gsea -p package-info.json",

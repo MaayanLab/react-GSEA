@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactGSEA, { dataFromResults } from '../src/index'
+import { ReactGSEA, dataFromResults } from '../src/index'
 
 function randint(min, max) {
   min = Math.ceil(min);

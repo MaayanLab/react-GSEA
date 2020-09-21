@@ -11,21 +11,15 @@ export interface ReactGSEAProps {
 export interface ReactGSEAState {
     ref?: SVGElement;
 }
-export declare function dataFromResults({ input, output }: {
-    input: {
-        up: string[];
-        down: string[];
-    };
-    output: {
-        entities: string[];
-        ranks: number[];
-    };
-}): any[];
+/**
+ * A react-wrapped d3 visualization for rendering GSEA running sum visualizations in browser.
+ */
 export declare class ReactGSEA extends React.Component<ReactGSEAProps, ReactGSEAState> {
+    static propTypes: {};
     constructor(props: ReactGSEAProps);
     componentWillReceiveProps: (props: ReactGSEAProps) => void;
     updateRef: (ref: any) => void;
     plotReactGSEA: () => void;
     render: () => JSX.Element;
 }
-export default ReactGSEA;
+export {};
