@@ -5,11 +5,18 @@ A react-wrapped d3 visualization for rendering GSEA running sum visualizations i
 ![Screenshot](./screenshot.png)
 
 ## Installation
+
+### Python
+```bash
+pip install react_gsea@git+git://github.com/maayanlab/react-GSEA.git
+```
+
+### Node
 ```
 npm i --save maayanlab/react-gsea
 ```
 
-### Usage
+#### Usage
 ```jsx
 import { ReactGSEA, dataFromResults } from 'react-gsea'
 
