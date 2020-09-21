@@ -17,5 +17,5 @@ setup(
     'package-info.json',
     'react_gsea.min.js',
   ]},
-  requires=['dash'],
+  install_requires=list(map(str.strip, open('requirements.txt', 'r').readlines())),
 )
