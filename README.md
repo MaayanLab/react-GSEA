@@ -2,6 +2,8 @@
 
 A react-wrapped d3 visualization for rendering GSEA running sum visualizations in browser.
 
+![Screenshot](./screenshot.png)
+
 ## Installation
 ```
 npm i --save maayanlab/react-gsea
