@@ -332,7 +332,7 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
   }
 
   render = () => (
-    <div>
+    <div style={{ width: 500, height: 350 }}>
       <style jsx global>{`
         .line {
           fill: none;
@@ -352,11 +352,6 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
           stroke-width: 4px;
         }
 
-        .body {
-          width: 500px;
-          height: 350px;
-        }
-
         @keyframes dash{
             from{
                 stroke-dashoffset: 1000;
@@ -373,7 +368,7 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
       {this.state.ref === undefined ? (
         <div>Loading...</div>
       ) : null}
-      <svg ref={this.updateRef} className="body"></svg>
+      <svg ref={this.updateRef} style={{ overflow: 'visible' }}></svg>
     </div>
   )
 }
