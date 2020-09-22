@@ -28,24 +28,16 @@ export default class App extends React.Component {
     const entities = 'abcdefghijklmnopqrstuvwxyz'.split('')
     let shuffled_entities = entities
     shuffle(shuffled_entities)
-    const up = shuffled_entities.slice(0, 10)
+    const input_set = shuffled_entities.slice(0, 10)
     shuffle(shuffled_entities)
-    const down = shuffled_entities.slice(0, 10)
-    shuffle(shuffled_entities)
-    const ranks = shuffled_entities.reduce((agg, ent, ind) => ({...agg, [ent]: ind}), {})
-    console.log({ up, down, ranks })
+    const ranked_entities = shuffled_entities
+    console.log({ input_set, ranked_entities })
     return (
       <div>
         <ReactGSEA
           data={dataFromResults({
-            input: {
-              up,
-              down,
-            },
-            output: {
-              entities,
-              ranks: entities.map(ent => ranks[ent]),
-            },
+            input_set,
+            ranked_entities,
           })}
         />
       </div>

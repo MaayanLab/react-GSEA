@@ -14,21 +14,14 @@ app.layout = html.Div(className='row', children=[
     className='col-sm-6',
     children=[
       ReactGSEA(
-        data=dataFromResult({
-          'up': [
-            'STAT3',
+        data=dataFromResult(
+          input_set=[
+            'STAT3', 'CD58'
           ],
-          'down': [
-            'CD58',
-          ],
-        }, {
-          'entities': [
+          ranked_entities=[
             'STAT3', 'STAT2', 'CD58', 'STAT1'
-          ],
-          'ranks': [
-            1, 0, 2, 3,
-          ],
-        }),
+          ]
+        ),
       ),
     ],
   ),

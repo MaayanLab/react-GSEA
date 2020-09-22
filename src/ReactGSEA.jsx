@@ -61,15 +61,12 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
     while (ref.firstChild) ref.removeChild(ref.firstChild)
 
     // Handle d3
-    let running_up = [];
-    let running_down = [];
+    let running = [];
 
     // set the dimensions and margins of the graph
     let margin = { top: 5, right: 20, bottom: 30, left: 70 },
       width = 500 - margin.left - margin.right,
       height = 130 - margin.top - margin.bottom;
-
-    let topheight = 400;
 
     // set the ranges
     let x = scaleLinear().range([0, width]);
@@ -87,19 +84,17 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
       .attr("transform",
         "translate(" + margin.left + "," + 20 + ")");
 
-    // append the svg obgect to the body of the page
+    // append the svg object to the body of the page
     // appends a 'group' element to 'svg'
     // moves the 'group' element to the top left margin
-    let svg = d3.select(ref).append("g").attr("id", "enrichsvg")
+    let svg = d3.select(ref).append("g")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .attr("transform",
         "translate(" + margin.left + "," + (200 + 2 * margin.top + margin.bottom) + ")");
 
-    running_up = new Array(data.length + 1);
-    running_down = new Array(data.length + 1);
-    running_up[0] = 0;
-    running_down[0] = 0;
+    running = new Array(data.length + 1);
+    running[0] = 0;
 
     // format the data
     let counter = 1;
@@ -109,50 +104,33 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
       d.b = +d.b;
 
       if (d.b == 1) {
-        running_up[counter] = running_up[counter - 1] + 1;
-        running_down[counter] = running_down[counter - 1];
-      }
-      else if (d.b == -1) {
-        running_up[counter] = running_up[counter - 1];
-        running_down[counter] = running_down[counter - 1] + 1;
-      }
-      else {
-        running_up[counter] = running_up[counter - 1];
-        running_down[counter] = running_down[counter - 1];
+        running[counter] = running[counter - 1] + 1;
+      } else {
+        running[counter] = running[counter - 1];
       }
 
       counter++;
     }
 
-    let t1 = running_up[running_up.length - 1]
-    let t2 = running_down[running_down.length - 1]
+    let t1 = running[running.length - 1]
 
-    let running_up_xy = [];
-    let running_down_xy = [];
+    let running_xy = [];
 
     let miny = 0;
     let maxy = 0;
 
-    for (let i = 0; i < running_up.length; i++) {
-      running_up[i] = (running_up[i] - (t1 / running_up.length)) / (t1) - i / (running_up.length);
-      running_down[i] = (running_down[i] - (t2 / running_down.length)) / (t2) - i / (running_down.length);
+    for (let i = 0; i < running.length; i++) {
+      running[i] = (running[i] - (t1 / running.length)) / (t1) - i / (running.length);
 
-      if (running_up[i] < miny) {
-        miny = running_up[i];
-      }
-      else if (running_down[i] < miny) {
-        miny = running_down[i];
+      if (running[i] < miny) {
+        miny = running[i];
       }
 
-      if (running_up[i] > maxy) {
-        maxy = running_up[i];
-      }
-      else if (running_down[i] > maxy) {
-        maxy = running_down[i];
+      if (running[i] > maxy) {
+        maxy = running[i];
       }
 
-      running_up_xy.push({ x: i, y: +running_up[i] });
-      running_down_xy.push({ x: i, y: +running_down[i] });
+      running_xy.push({ x: i, y: +running[i] });
     }
 
     let ReactGSEA = d3.line/*<ReactGSEADatum>*/()
@@ -185,15 +163,9 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
       .attr("y2", relZero);
 
     let path2 = svg2.append("path")
-      .data([running_up_xy])
-      .attr("class", "upline")
+      .data([running_xy])
+      .attr("class", "running_line")
       .attr("d", ReactGSEA);
-
-    let path3 = svg2.append("path")
-      .data([running_down_xy])
-      .attr("class", "downline")
-      .attr("d", ReactGSEA);
-
 
     // running sum plot stuff
     svg2.append("g")
@@ -209,40 +181,6 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("Enrichment Score");
-
-    svg2.append("rect")
-      .attr("x", 296)
-      .attr("y", -4)
-      .attr("width", 114)
-      .attr("height", 42)
-      .attr("fill", "white")
-      .style("opacity", 0.6);
-
-    svg2.append("rect")
-      .attr("x", 300)
-      .attr("y", 0)
-      .attr("width", 14)
-      .attr("height", 14)
-      .attr("fill", "dodgerblue");
-
-    svg2.append("text")
-      .attr("y", 11)
-      .attr("x", 320)
-      .style("text-anchor", "start")
-      .text("up genes");
-
-    svg2.append("rect")
-      .attr("x", 300)
-      .attr("y", 20)
-      .attr("width", 14)
-      .attr("height", 14)
-      .attr("fill", "firebrick");
-
-    svg2.append("text")
-      .attr("y", 32)
-      .attr("x", 320)
-      .style("text-anchor", "start")
-      .text("down genes");
 
     y = d3.scaleLinear().range([height, 0]);
     y.domain([d3.min(data, function (d) { return d.y; }), d3.max(data, function (d) { return d.y; })]);
@@ -270,21 +208,6 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
           .attr("x2", i * width / (data.length - 1))     // x position of the second end of the line
           .attr("y2", relZero - 1);
       }
-      else if (data[i].b == -1) {
-        svg.append("line")          // attach a line
-          .style("stroke", "firebrick")  // colour the line
-          .style("stroke-width", "2")
-          .attr("x1", width / 2)     // x position of the first end of the line
-          .attr("y1", relZero + 30)      // y position of the first end of the line
-          .attr("x2", width / 2)     // x position of the second end of the line
-          .attr("y2", relZero + 1)
-          .transition()
-          .duration(500)
-          .attr("x1", i * width / (data.length - 1))     // x position of the first end of the line
-          .attr("y1", relZero + 30)      // y position of the first end of the line
-          .attr("x2", i * width / (data.length - 1))     // x position of the second end of the line
-          .attr("y2", relZero + 1);
-      }
     }
 
     // Add the Y Axis
@@ -300,35 +223,7 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Gene Weights");
-
-    svg.append("rect")
-      .attr("y", height / 2 - 36)
-      .attr("x", width / 2 - 36)
-      .attr("width", 72)
-      .attr("height", 22)
-      .attr("fill", "white")
-      .style("opacity", 0.6);
-
-    svg.append("text")
-      .attr("y", height / 2 - 20)
-      .attr("x", width / 2)
-      .style("text-anchor", "middle")
-      .text("up genes");
-
-    svg.append("rect")
-      .attr("y", height / 2 + 24)
-      .attr("x", width / 2 - 46)
-      .attr("width", 92)
-      .attr("height", 22)
-      .attr("fill", "white")
-      .style("opacity", 0.6);
-
-    svg.append("text")
-      .attr("y", height / 2 + 40)
-      .attr("x", width / 2)
-      .style("text-anchor", "middle")
-      .text("down genes");
+      .text("Weights");
   }
 
   render = () => (
@@ -340,15 +235,9 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
           stroke-width: 4px;
         }
 
-        .upline {
+        .running_line {
           fill: none;
           stroke: dodgerblue ;
-          stroke-width: 4px;
-        }
-
-        .downline {
-          fill: none;
-          stroke: firebrick;
           stroke-width: 4px;
         }
 
@@ -359,10 +248,6 @@ export class ReactGSEA extends React.Component/*<ReactGSEAProps, ReactGSEAState>
             to{
                 stroke-dashoffset: 0;
             }
-        }
-
-        .body {
-          font-family: 'Roboto', sans-serif;
         }
       `}</style>
       {this.state.ref === undefined ? (

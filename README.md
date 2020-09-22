@@ -24,22 +24,12 @@ const your_viz = (
   <ReactGSEA
     data={
       dataFromResults({
-        input: {
-          up: [
-            'STAT3', // ...
-          ],
-          down: [
-            'CD58', // ...
-          ],
-        },
-        output: {
-          entities: [
-            'STAT3', 'STAT2', 'CD58', 'STAT1', // ...
-          ],
-          ranks: [
-            1, 0, 2, 3, // ...
-          ],
-        }
+        input_set: [
+          'STAT3', 'CD58', // ...
+        ],
+        ranked_entities: [
+          'STAT3', 'STAT2', 'CD58', 'STAT1', // ...
+        ]
       })
     }
   />

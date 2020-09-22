@@ -1,22 +1,16 @@
-def dataFromResult(input, output):
+def dataFromResult(input_set, ranked_entities):
   data = []
-  for i in range(len(output['ranks'])):
-    if output['entities'][i] in input['up']:
+  for i, ranked_entity in enumerate(ranked_entities):
+    if ranked_entity in input_set:
       data.append({
-        'x': output['ranks'][i],
-        'y': -(output['ranks'][i]-(len(output['ranks'])/2)) / (len(output['ranks'])/2),
+        'x': i,
+        'y': -(i-(len(ranked_entities)/2)) / (len(ranked_entities)/2),
         'b':  1
-      })
-    elif output['entities'][i] in input['down']:
-      data.append({
-        'x': output['ranks'][i],
-        'y': -(output['ranks'][i]-(len(output['ranks'])/2)) / (len(output['ranks'])/2),
-        'b': -1
       })
     else:
       data.append({
-        'x': output['ranks'][i],
-        'y': -(output['ranks'][i]-(len(output['ranks'])/2)) / (len(output['ranks'])/2),
+        'x': i,
+        'y': -(i-(len(ranked_entities)/2)) / (len(ranked_entities)/2),
         'b':  0
       })
   return sorted(data, key=lambda r: r['x'])
